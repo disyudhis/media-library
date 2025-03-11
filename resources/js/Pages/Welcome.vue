@@ -32,7 +32,62 @@
 <template>
 
     <Head title="Welcome" />
-    <div class="bg-gray-50 text-black/50 dark:bg-black dark:text-white/50">
+
+    <div class="bg-gray-50 text-black/100">
+        <div
+            class="relative min-h-screen flex flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white">
+            <header class="grid grid-cols-3 items-center gap-2 py-10 lg:grid-cols-2">
+                <div class="absolute top-0 left-0">
+                </div>
+                <nav class="absolute right-0 top-0 mr-10 mt-10">
+                    <div class="grid grid-cols-3 gap-2 text-center">
+                        <div>
+                            <Link :href="route('login')">Log in
+                            </Link>
+                        </div>
+                        <div>
+                            <Link :href="route('admin.dashboard')">Dashboard
+                            </Link>
+                        </div>
+                        <div>
+                            <a href="https://github.com/disyudhis" target="_blank"><i class="pi pi-github"></i> Github</a>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+            <main class="grid grid-rows-2 text-center">
+                <div>
+                    <h1 class="text-8xl">Media Library</h1>
+                </div>
+                <div>
+                    <p>Creator's simple media library made with VILT stack</p>
+                    <div class="flex flex-row justify-center content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-32" aria-label="Vue" viewBox="0 0 512 512"
+                            id="vue">
+                            <rect width="512" height="512" fill="#fff" rx="15%"></rect>
+                            <path fill="#42b883" d="M300 140l-44 77-44-77H64l192 333 192-333z"></path>
+                            <path fill="#35495e" d="M300 140l-44 77-44-77h-71l115 200 115-200z"></path>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="139.359" height="95.416"
+                            id="laravel">
+                            <path fill="#fb503b"
+                                d="M138.799 44.583c-.994-.994-13.748-17.061-15.9-19.712-2.319-2.65-3.313-2.153-4.8-1.988s-17.558 2.982-19.38 3.147c-1.822.331-2.982.994-1.822 2.65.994 1.491 11.6 16.4 13.914 19.877l-42.239 10.1L35.107 2.509C33.782.522 33.45-.141 30.469.025S4.131 2.178 2.475 2.178c-1.656.166-3.481.828-1.822 4.804s28.159 60.956 28.822 62.613 2.65 4.307 7.123 3.313c4.638-1.16 20.54-5.3 29.319-7.62 4.638 8.282 13.914 25.178 15.736 27.662 2.319 3.313 3.975 2.65 7.454 1.656 2.816-.828 43.4-15.4 45.221-16.233s2.982-1.325 1.656-3.147c-.994-1.325-11.6-15.736-17.227-23.19 3.81-.994 17.558-4.638 19.049-5.135 1.656-.5 1.988-1.325.994-2.319ZM62.106 60.315c-.5.166-24.184 5.8-25.343 6.129-1.325.331-1.325.166-1.325-.331-.331-.498-28.159-58.137-28.656-58.798-.331-.663-.331-1.325 0-1.325S29.143 4 29.806 4c.828 0 .663.166.994.663 0 0 30.975 53.5 31.472 54.331.663.828.331 1.16-.166 1.325Zm66.588 12.427c.331.663.828.994-.5 1.325-1.159.5-39.92 13.583-40.748 13.914s-1.325.5-2.319-.994-13.583-23.19-13.583-23.19l41.25-10.767c.994-.331 1.325-.5 1.988.5.663 1.16 13.583 18.718 13.914 19.215Zm2.65-29.153c-.994.166-16.067 3.975-16.067 3.975l-12.423-16.9c-.331-.5-.663-.994.166-1.16s14.908-2.65 15.57-2.816 1.16-.331 1.988.828c.828.994 11.429 14.577 11.926 15.074s-.166.828-1.16.994Z">
+                            </path>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="139" height="90" id="tailwind-css">
+                            <path fill="#87DDFD"
+                                d="M18.5 9.51a4.22 4.22 0 0 1-1.91-1.34A5.77 5.77 0 0 0 12 6a4.72 4.72 0 0 0-5 4 3.23 3.23 0 0 1 3.5-1.49 4.32 4.32 0 0 1 1.91 1.35A5.77 5.77 0 0 0 17 12a4.72 4.72 0 0 0 5-4 3.2 3.2 0 0 1-3.5 1.51zm-13 4.98a4.22 4.22 0 0 1 1.91 1.34A5.77 5.77 0 0 0 12 18a4.72 4.72 0 0 0 5-4 3.23 3.23 0 0 1-3.5 1.49 4.32 4.32 0 0 1-1.91-1.35A5.8 5.8 0 0 0 7 12a4.72 4.72 0 0 0-5 4 3.2 3.2 0 0 1 3.5-1.51z">
+                            </path>
+                        </svg>
+                    </div>
+                </div>
+            </main>
+            <div class="relative w-full max-w-2xl px-6 lg:max-w-7xl">
+
+            </div>
+        </div>
+    </div>
+    <!-- <div class="bg-gray-50 text-black/50 dark:bg-black dark:text-white/50">
         <img id="background" class="absolute -left-20 top-0 max-w-[877px]"
             src="https://laravel.com/assets/img/welcome/background.svg" />
         <div
@@ -231,5 +286,5 @@
                 </footer>
             </div>
         </div>
-    </div>
+    </div> -->
 </template>

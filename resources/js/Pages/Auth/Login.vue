@@ -1,90 +1,123 @@
 <script setup>
-import { Head, Link, useForm } from '@inertiajs/vue3';
-import AuthenticationCard from '@/Components/AuthenticationCard.vue';
-import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
-import Checkbox from '@/Components/Checkbox.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
+import {
+    Head,
+    useForm,
+} from '@inertiajs/vue3';
+import {
+    ref,
+} from 'vue';
+import {
+    Form
+} from '@primevue/forms';
+import {
+    Divider,
+    InputText,
+    Message,
+    Password,
+    Button,
+    useToast,
+    Toast
+} from 'primevue';
+import {
+    zodResolver
+} from '@primevue/forms/resolvers/zod';
+import {
+    z
+} from 'zod';
 
-defineProps({
-    canResetPassword: Boolean,
-    status: String,
-});
+defineProps({errors: Object})
+
+const toast = useToast();
 
 const form = useForm({
+    email: null,
+    password: null
+})
+
+const initialValues = ref({
     email: '',
-    password: '',
-    remember: false,
+    password: ''
 });
 
+const resolver = zodResolver(
+    z.object({
+        email: z.string().email(),
+        password: z.string()
+            .min(3, {
+                message: 'Minimum 3 characters.'
+            })
+            .max(8, {
+                message: 'Maximum 8 characters.'
+            })
+
+    })
+);
+
 const submit = () => {
-    form.transform(data => ({
-        ...data,
-        remember: form.remember ? 'on' : '',
-    })).post(route('login'), {
+    form.post(route('login'), {
         onFinish: () => form.reset('password'),
+        onError: (errors) => {
+            if (Object.keys(errors).length > 0) {
+                Object.entries(errors).forEach(([field, message]) => {
+                    toast.add({
+                        severity: 'error',
+                        summary: `Error pada ${field}`,
+                        detail: message,
+                        life: 3000
+                    });
+                });
+            } else {
+                toast.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Terjadi kesalahan saat login',
+                    life: 3000
+                });
+            }
+        }
     });
 };
 </script>
 
 <template>
+
     <Head title="Log in" />
-
-    <AuthenticationCard>
-        <template #logo>
-            <AuthenticationCardLogo />
-        </template>
-
-        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
-            {{ status }}
-        </div>
-
-        <form @submit.prevent="submit">
+    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
+        <Toast />
+        <div class="w-full sm:max-w-md mt-6 px-6 py-4 overflow-hidden sm:rounded-lg text-black">
+            <!-- Logo -->
             <div>
-                <InputLabel for="email" value="Email" />
-                <TextInput
-                    id="email"
-                    v-model="form.email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    required
-                    autofocus
-                    autocomplete="username"
-                />
-                <InputError class="mt-2" :message="form.errors.email" />
+                <h1 class="text-4xl font-medium text-center">Log in</h1>
             </div>
+            <Divider align="center">
+                <small>Log in here</small>
+            </Divider>
+            <!-- Form -->
+            <div>
+                <Form v-slot="$form" :initialValues :resolver @submit="submit" class="flex flex-col gap-4">
+                    <div class="flex flex-col gap-4">
+                        <div class="flex flex-col">
+                            <label for="email">Email</label>
+                            <InputText id="email" v-model="form.email" name="email" fluid type="email" aria-describedby="email-help" />
+                            <Message v-if="$form.email?.invalid" severity="error" size="small" variant="simple">
+                                {{ $form.email.error?.message }}
+                            </Message>
+                        </div>
+                        <div class="flex flex-col">
+                            <label for="password">Password</label>
+                            <Password name="password" v-model="form.password" :feedback="false" fluid toggleMask />
+                            <Message v-if="$form.password?.invalid" severity="error" size="small" variant="simple">
+                                <ul class="my-0 px-4 flex flex-col gap-1">
+                                    <li v-for="(error, index) of $form.password.errors" :key="index">
+                                        {{ error.message }}</li>
+                                </ul>
+                            </Message>
 
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-                <TextInput
-                    id="password"
-                    v-model="form.password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    required
-                    autocomplete="current-password"
-                />
-                <InputError class="mt-2" :message="form.errors.password" />
+                        </div>
+                    </div>
+                    <Button type="submit" severity="secondary" label="Submit" :disabled="form.processing" />
+                </Form>
             </div>
-
-            <div class="block mt-4">
-                <label class="flex items-center">
-                    <Checkbox v-model:checked="form.remember" name="remember" />
-                    <span class="ms-2 text-sm text-gray-600">Remember me</span>
-                </label>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <Link v-if="canResetPassword" :href="route('password.request')" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Forgot your password?
-                </Link>
-
-                <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Log in
-                </PrimaryButton>
-            </div>
-        </form>
-    </AuthenticationCard>
+        </div>
+    </div>
 </template>

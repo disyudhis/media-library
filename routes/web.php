@@ -1,9 +1,10 @@
 <?php
 
-use App\Models\Photo;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Models\Photo;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -18,7 +19,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
-        Route::get('/dashboard', function () {
+        Route::get('/dashboard', function (Request $request) {
+            $request->session()->flash('success', 'Login berhasil!');
             return Inertia::render('Dashboard');
         })->name('dashboard');
 

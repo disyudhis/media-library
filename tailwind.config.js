@@ -15,10 +15,12 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['aclonica', ...defaultTheme.fontFamily.sans],
+                serif: ['Inter Tight', ...defaultTheme.fontFamily.serif]
             },
         },
     },
 
     plugins: [forms, typography],
+    darkMode: 'class'
 };
